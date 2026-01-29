@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Oficina de Ideação com Integração de Inteligência Artificial</title>
+
+  <!-- Inclusão da biblioteca jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    :root { --azul-escuro:#003366; --azul-claro:#e6f0fa; }
+
+    body{
+      font-family: Arial, sans-serif;
+      margin:0; padding:20px;
+      background-color:#f3f3f3;
+    }
+
+    h1{ text-align:center; color:var(--azul-escuro); }
+
+    .fase{
+      background:#fff; border-radius:10px; padding:15px;
+      margin:10px 0; box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .fase h2{ color:var(--azul-escuro); }
+    .fase p, .fase li{ white-space:pre-wrap; }
+    .fase ul{ margin-left:20px; }
+
+    .chat{
+      background:#fff; border-radius:10px; padding:20px;
+      margin:20px 0; box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .chat input{
+      flex:1; padding:10px;
+      border-radius:5px; border:1px solid #ccc;
+    }
+
+    .chat button.enviar{
+      margin-left:10px; padding:10px 20px;
+      border-radius:5px; border:none;
+      background:var(--azul-escuro); color:#fff; cursor:pointer;
+    }
+
+    .chat .mensagens{
+      margin-top:15px; max-height:200px; overflow-y:auto;
+      background:var(--azul-claro); padding:10px; border-radius:5px;
+      font-size:14px; white-space:pre-wrap;
+    }
+
+    footer{
+      font-size:0.9em; color:#555; text-align:center;
+      padding:10px 0; border-top:1px solid #ccc; margin-top:20px;
+    }
+
+    footer a{ color:var(--azul-escuro); text-decoration:none; }
+
+    button{
+      padding:8px 12px; border-radius:5px; border:none;
+      color:#fff; cursor:pointer;
+    }
+
+    #salvarSessao{ background-color:#2c3e50; }
+    #carregarSessao{ background-color:#3498db; margin-left:10px; }
+    #btnPdf{ background-color:#e67e22; }
+
+    .title{
+      text-align:center; max-width:700px; margin:0 auto;
+      line-height:1.6; color:#2580c0; font-size:1.8rem;
+    }
+    .title h2{ margin-bottom:0.4em; font-size:2.8rem; }
+
+    .chat-ia{ margin-top:10px; }
+    .ia-row{ display:flex; align-items:center; gap:10px; }
+    .ia-row input{ flex:1; }
+    .fontes{ margin-top:10px; background:var(--azul-claro); padding:10px; border-radius:6px; }
+    .fontes summary{ cursor:pointer; }
+    .fonte-item{ margin:8px 0; padding:8px; background:#fff; border-radius:6px; border:1px solid #dbe7f5; }
+    .fonte-item small{ color:#555; display:block; margin-top:4px; }
+    .msg{ margin:6px 0; padding:8px; border-radius:6px; }
+    .msg.user{ background:#fff; border:1px solid #ddd; }
+    .msg.ai{ background:#dfefff; border:1px solid #bcd6f5; }
+  </style>
+</head>
+
+<body>
+
+  <div class="title">
+    <h2>OFICINA DE IDEAÇÃO</h2>
+  </div>
+
+  <div class="fase">
+    <div style="text-align:center; max-width:700px; margin:0 auto; line-height:1.6; color:#333;">
+      <h2 style="margin-bottom:0.4em;">Sobre o Projeto</h2>
+      <p style="font-size:1.1em; margin-bottom:1em;">
+        Este é um web app interativo que apresenta as etapas do Design Thinking (Oficina de Ideação),
+        com o apoio de uma Inteligência Artificial para estimular a geração de ideias criativas e inclusivas.
+        A ideia foi desenvolvida com o foco de ser aplicada em capacitações para professores de escola pública,
+        a fim de criar soluções inovadoras que contribuem para a inclusão escolar de alunos com deficiência.
+      </p>
+
+      <h2 style="margin-bottom:0.4em;">Como Funciona?</h2>
+      <p style="font-size:1.1em; margin-bottom:1em;">
+        Abaixo estão apresentadas as fases da Oficina de Ideação, com exemplos que podem ser utilizados para orientar sua proposta.
+        No canto da tela, há um botão que abre um <strong>chat com inteligência artificial</strong>: você pode inserir seu caso ou desafio
+        e receber sugestões para desenvolver melhor sua ideia.
+        Logo abaixo, há um campo de mensagem onde você pode registrar suas ideias. Após preenchê-lo, clique no botão <strong>“Enviar”</strong> para salvar.
+        Se quiser gerar um arquivo com o conteúdo produzido, clique no botão <strong>“Gerar PDF”</strong>.
+      </p>
+    </div>
+  </div>
+
+  <div class="fase">
+    <h2>1. Criação da Persona</h2>
+    <ul>
+      <li>Persona: personagem fictício baseado em dados reais que representa o usuário.</li>
+      <li>Inclui informações como idade, necessidades, interesses e motivações.</li>
+      <br />
+      <strong>Exemplo: Ana, 6 anos, está no espectro autista, é minimamente verbal e gosta de histórias com ilustrações. Tem dificuldade para interagir em atividades em grupo sem apoio visual estruturado.</strong>
+    </ul>
+  </div>
+
+  <div class="fase">
+    <h2>2. Motivadores</h2>
+    <ul>
+      <li>Identificação do que motiva a persona: sonhos, preferências, frustrações.</li>
+      <li>Esses dados ajudam a criar soluções alinhadas ao que faz sentido para o usuário.</li>
+      <br />
+      <strong>Exemplo: Ana adora contar histórias com imagens e se frustra quando não consegue expressar o que sente na sala de aula.</strong>
+    </ul>
+  </div>
+
+  <div class="fase">
+    <h2>3. Problemas</h2>
+    <ul>
+      <li>Identificação clara da barreira enfrentada pela persona.</li>
+      <li>Definir o problema de forma objetiva ajuda a equipe a trabalhar alinhada.</li>
+      <br />
+      <strong>Exemplo: Ana não consegue se comunicar com colegas e professores por falta de recursos visuais acessíveis.</strong>
+    </ul>
+  </div>
+
+  <div class="fase">
+    <h2>4. Desenvolvimento do Projeto</h2>
+    <ul>
+      <li>Ideação coletiva: geração de soluções em grupo (brainstorming).</li>
+      <li>Prototipagem: criação de modelos simples (protótipos).</li>
+      <li>Teste com usuários reais e coleta de feedback.</li>
+      <li>Iteração: refinar soluções com base nas respostas dos usuários.</li>
+    </ul>
+  </div>
+
+  <div class="fase">
+    <h2>5. Visão</h2>
+    <ul>
+      <li>Projeção de um futuro ideal após a solução do problema.</li>
+      <li>A visão do futuro guia o processo criativo com um objetivo claro.</li>
+      <br />
+      <strong>Exemplo: Ana utilizando um aplicativo com figuras e sons para se comunicar e participar das atividades em sala.</strong>
+    </ul>
+  </div>
+
+  <div class="fase">
+    <h2>6. Solução e Impacto</h2>
+    <ul>
+      <li>Definição e validação da solução final.</li>
+      <li>Análise do impacto: melhoria na participação, aprendizagem ou inclusão.</li>
+      <li>Encerramento do ciclo com foco em resultados reais para os usuários.</li>
+      <br />
+      <strong>Exemplo: Aplicativo de comunicação aumentativa validado com crianças autistas na escola.</strong>
+    </ul>
+  </div>
+
+  <div class="chat chat-ia" aria-label="Chat com Inteligência Artificial">
+    <h2>Chat IA 🤖📚</h2>
+    <p>Faça uma pergunta. A resposta será baseada em literatura científica e exibirá referências quando houver.</p>
+
+    <div class="ia-row">
+      <input type="text" id="inputIa" placeholder="Ex.: Como adaptar uma atividade para promover autonomia?" />
+      <button class="enviar" id="btnPerguntarIa" type="button" onclick="perguntarIa()">Perguntar</button>
+    </div>
+
+    <div class="mensagens" id="mensagensIa" aria-live="polite"></div>
+
+    <details class="fontes" id="fontesBox" style="display:none;">
+      <summary><strong>Referências</strong></summary>
+      <div id="fontesIa"></div>
+    </details>
+  </div>
+
+  <div class="chat">
+    <h2>Chat de Ideias 💡</h2>
+    <p>Digite suas ideias e comentários para salvar e depois gerar um PDF:</p>
+
+    <div style="display:flex; align-items:center;">
+      <input type="text" id="inputChat" placeholder="Digite sua ideia aqui..." />
+      <button class="enviar" type="button" onclick="enviarMensagem()">Enviar</button>
+    </div>
+
+    <div class="mensagens" id="mensagens"></div>
+    <button id="btnPdf" type="button" onclick="gerarPDF()">📄 Gerar PDF</button>
+  </div>
+
+  <div style="margin-top:10px;">
+    <button id="salvarSessao" type="button" onclick="salvarSessao()">💾 Salvar Sessão</button>
+    <button id="carregarSessao" type="button" onclick="carregarSessao()">📂 Carregar Sessão</button>
+  </div>
+
+  <footer>
+    © 2025 Profª Drª Fabiana Faleiros Castro / EERP-USP<br />
+    Este aplicativo está licenciado sob a
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt" target="_blank" rel="noopener noreferrer">
+      Creative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional (CC BY-NC-SA 4.0)
+    </a>.<br />
+    Uso livre para fins educacionais não comerciais.<br />
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+      <img src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" alt="Licença Creative Commons" style="border-width:0; margin-top:5px;">
+    </a>
+  </footer>
+
+<script>
+  // ====== Config ======
+  // Para Cloudflare Pages + Functions (tudo junto), use "/chat"
+  // Se você continuar usando Worker separado, troque por "https://SEU_WORKER.workers.dev/chat"
+  const WORKER_CHAT_URL = "/chat";
+
+  // ====== Chat de ideias + PDF ======
+  const mensagensKey = 'chatDesignThinkingMensagens';
+  const sessaoKey = 'chatDesignThinkingSessaoCompleta';
+  let editandoIndex = null;
+
+  function carregarMensagens() {
+    const divMensagens = document.getElementById('mensagens');
+    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+    divMensagens.innerHTML = msgs.map((msg, index) => `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+        <span>• ${escapeHtml(msg)}</span>
+        <div>
+          <button type="button" onclick="editarMensagem(${index})" style="background:none; border:none; color:orange; font-size:16px; cursor:pointer;">✏️</button>
+          <button type="button" onclick="removerMensagem(${index})" style="background:none; border:none; color:red; font-size:16px; cursor:pointer;">🗑️</button>
+        </div>
+      </div>
+    `).join('');
+    divMensagens.scrollTop = divMensagens.scrollHeight;
+  }
+
+  function removerMensagem(index) {
+    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+    msgs.splice(index, 1);
+    localStorage.setItem(mensagensKey, JSON.stringify(msgs));
+    carregarMensagens();
+  }
+
+  function editarMensagem(index) {
+    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+    const input = document.getElementById('inputChat');
+    input.value = msgs[index];
+    editandoIndex = index;
+    input.focus();
+  }
+
+  function enviarMensagem() {
+    const input = document.getElementById('inputChat');
+    const texto = input.value.trim();
+    if (!texto) return alert('Digite uma ideia antes de enviar!');
+    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+
+    if (editandoIndex !== null) {
+      msgs[editandoIndex] = texto;
+      editandoIndex = null;
+    } else {
+      msgs.push(texto);
+    }
+
+    localStorage.setItem(mensagensKey, JSON.stringify(msgs));
+    input.value = '';
+    carregarMensagens();
+  }
+
+  function gerarPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+    if (msgs.length === 0) return alert('Não há ideias para gerar PDF.');
+
+    doc.setFontSize(18);
+    doc.text('Ideias do Chat - Design Thinking', 10, 20);
+    doc.setFontSize(12);
+
+    let y = 40;
+    msgs.forEach((msg, i) => {
+      const texto = `${i + 1}. ${msg}`;
+      const splitText = doc.splitTextToSize(texto, 180);
+      doc.text(splitText, 10, y);
+      y += splitText.length * 10;
+      if (y > 280) { doc.addPage(); y = 20; }
+    });
+
+    doc.save('ideias_design_thinking.pdf');
+  }
+
+  function salvarSessao() {
+    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+    const input = document.getElementById('inputChat').value;
+    const sessao = { mensagens: msgs, inputAtual: input, editandoIndex };
+    localStorage.setItem(sessaoKey, JSON.stringify(sessao));
+    alert('Sessão salva com sucesso!');
+  }
+
+  function carregarSessao() {
+    const sessao = JSON.parse(localStorage.getItem(sessaoKey));
+    if (!sessao) return alert('Nenhuma sessão salva encontrada.');
+    localStorage.setItem(mensagensKey, JSON.stringify(sessao.mensagens));
+    document.getElementById('inputChat').value = sessao.inputAtual || '';
+    editandoIndex = (sessao.editandoIndex !== undefined) ? sessao.editandoIndex : null;
+    carregarMensagens();
+    alert('Sessão carregada!');
+  }
+
+  // ====== Util ======
+  function escapeHtml(str) {
+    return String(str)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  // ====== Chat IA (Literatura científica via /chat) ======
+  async function perguntarIa() {
+    const input = document.getElementById("inputIa");
+    const mensagens = document.getElementById("mensagensIa");
+    const fontesBox = document.getElementById("fontesBox");
+    const fontesDiv = document.getElementById("fontesIa");
+
+    const q = (input.value || "").trim();
+    if (!q) return alert("Digite uma pergunta.");
+
+    mensagens.innerHTML += `<div class="msg user"><strong>Você:</strong> ${escapeHtml(q)}</div>`;
+    mensagens.scrollTop = mensagens.scrollHeight;
+
+    const loadingId = "loading-" + Date.now();
+    mensagens.innerHTML += `<div class="msg ai" id="${loadingId}"><strong>IA:</strong> pesquisando na literatura...</div>`;
+    mensagens.scrollTop = mensagens.scrollHeight;
+
+    fontesBox.style.display = "none";
+    fontesDiv.innerHTML = "";
+
+    try {
+      const resp = await fetch(WORKER_CHAT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: q })
+      });
+
+      if (!resp.ok) {
+        const txt = await resp.text();
+        throw new Error(`HTTP ${resp.status} - ${txt}`);
+      }
+
+      const data = await resp.json();
+
+      document.getElementById(loadingId).innerHTML =
+        `<strong>IA:</strong><br>${escapeHtml(data.answer || "").replace(/\n/g, "<br>")}`;
+
+      // Referências
+      if (data.refs && Array.isArray(data.refs) && data.refs.length) {
+        fontesDiv.innerHTML = data.refs.map(r => `
+          <div class="fonte-item">
+            <strong>${escapeHtml(r.ref || "REF")}</strong>
+            <small><strong>${escapeHtml(r.title || "Sem título")}</strong>${r.year ? ` • ${escapeHtml(r.year)}` : ""}</small>
+            ${r.url ? `<small><a href="${escapeHtml(r.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(r.url)}</a></small>` : ""}
+          </div>
+        `).join("");
+        fontesBox.style.display = "block";
+      }
+    } catch (e) {
+      console.error(e);
+      document.getElementById(loadingId).innerHTML =
+        `<strong>IA:</strong> não consegui consultar a literatura agora. Tente novamente em instantes.<br><small>${escapeHtml(String(e?.message || e))}</small>`;
+    }
+
+    input.value = "";
+  }
+
+  // ====== Init ======
+  window.addEventListener("load", () => {
+    carregarMensagens();
+  });
+</script>
+
+</body>
+</html>
